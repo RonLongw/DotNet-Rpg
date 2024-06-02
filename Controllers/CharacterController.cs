@@ -29,9 +29,9 @@ namespace DotNet_Rpg.Controllers
         [HttpPost("AddCharacter")]
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> AddCharacter(AddCharacterDto c)
         {
-            await characterService.AddCharacter(c);
+            var response = await characterService.AddCharacter(c);
 
-            return Ok(characterService.GetAllCharacters());
+            return response;
         }
 
         [HttpPut]
