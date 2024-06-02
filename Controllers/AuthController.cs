@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DotNet_Rpg.Data;
+using DotNet_Rpg.Dtos.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNet_Rpg.Controllers
@@ -22,7 +23,20 @@ namespace DotNet_Rpg.Controllers
         public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegisterDto request)
         {
             var response = await _authRepo.Register(
-                new User { Username = request.Username }, request.Password);
+                new UserData { Username = request.Username }, request.Password);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost("Login")]
+        public async Task<ActionResult<ServiceResponse<int>>> Login(UserLoginDto request)
+        {
+            var response = await _authRepo.Login(request.Username, request.Password);
 
             if (!response.Success)
             {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DotNet_Rpg.Models
 {
-    public class User
+    public class UserData
     {
         public int Id { get; set; }
         public string Username { get; set; } = string.Empty;

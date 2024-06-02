@@ -2,12 +2,15 @@ global using DotNet_Rpg.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DotNet_Rpg.Services.CharacterService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNet_Rpg.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CharacterController(ICharacterService characterService) : ControllerBase
@@ -17,7 +20,9 @@ namespace DotNet_Rpg.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<ServiceResponse<List<Character>>>> Get() 
         {
-            return Ok(await characterService.GetAllCharacters());
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
+
+            return Ok(await characterService.GetAllCharacters(userId));
         }
 
         [HttpGet("Get/{id}")]
